@@ -1,5 +1,5 @@
 builds:
-  -binary: wwww
+  -binary: gosyncfolders
     goos:
       - linux
       - windows
