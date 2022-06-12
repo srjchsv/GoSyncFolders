@@ -2,7 +2,6 @@ builds:
   -binary: gosyncfolders
   goos:
     - linux
-    - windows
     - darwin
   goarch:
     - amd64
