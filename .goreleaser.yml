@@ -1,16 +1,16 @@
 builds:
   -binary: gosyncfolders
-    goos:
-      - linux
-      - windows
-      - darwin
-    goarch:
-      - amd64
-      - arm64
-    env:
-      - CGO_ENABLED=0
-    flags:
-      - mod=vendor
+  goos:
+    - linux
+    - windows
+    - darwin
+  goarch:
+    - amd64
+    - arm64
+  env:
+    - CGO_ENABLED=0
+  flags:
+    - mod=vendor
   release:
     prerelease: auto
   universal_binaries:
