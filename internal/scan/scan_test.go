@@ -23,6 +23,7 @@ var (
 )
 
 func init() {
+	defer cancel()
 	logrus.SetOutput(ioutil.Discard)
 	os.MkdirAll(srcPath, 0750)
 	os.MkdirAll(dstPath, 0750)
