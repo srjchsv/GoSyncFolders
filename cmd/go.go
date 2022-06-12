@@ -31,7 +31,7 @@ var goCmd = &cobra.Command{
 	This command will start sync source and destination folders that you have to input.
 
 	For example:
-	wwww go src/ dst/ 
+	gosyncfolders go src/ dst/ 
 
 	src/ as source folder in current directory. 
 	dst/ as the destination folder in current directory.
@@ -42,7 +42,7 @@ var goCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		switch len(args) {
 		case 0:
-			fmt.Printf("You have to add two arguments with source/ and destination/ folders after the wwww go")
+			fmt.Printf("You have to add two arguments with source/ and destination/ folders after the gosyncfolders go")
 			return
 		case 1:
 			fmt.Printf("You have to add one more argument with destination/ folder")
@@ -77,7 +77,7 @@ var goCmd = &cobra.Command{
 
 		log.Info("Starting the program")
 		fmt.Println("==============================")
-		fmt.Println("=========wwww========")
+		fmt.Println("=========gosyncfolders========")
 		fmt.Println("==============================")
 		src := args[0]
 		dst := args[1]

@@ -11,7 +11,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "wwww",
+	Use:   "gosyncfolders",
 	Short: "Let GO sync folders for you",
 	Long:  `A program that syncs source and destination folders of your input.`,
 
