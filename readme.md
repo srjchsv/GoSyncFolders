@@ -2,15 +2,7 @@
 ### A Go program that scans and syncs source and destination folders
 
 ----------------
-### To run program first you need to clone or download the repo
-### and then install all dependencies with:
-### `go mod tidy`
-### Finally install the program using:
-### `go install `
-#### or you can execute `export GO111MODULE=off`
-#### then `go get github.com/srjchsv/gosyncfolders`
-#### and finally  `go install github.com/srjchsv/gosyncfolders`
-
+### To install `go install github.com/srjchsv/gosyncfolders@latest`
 
 ### And then let GO sync folders for you =) run :
 ### `gosyncfolders go src/ dst/`
