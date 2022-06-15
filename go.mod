@@ -1,4 +1,4 @@
-module github.com/srjchsv/gosyncfolders
+module github.com/srjchsv/gosyncfolders/v2
 
 go 1.18
 
