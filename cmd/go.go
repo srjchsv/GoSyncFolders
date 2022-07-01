@@ -7,12 +7,13 @@ package cmd
 import (
 	"context"
 	"fmt"
-	log "github.com/sirupsen/logrus"
-	"github.com/spf13/cobra"
-	"github.com/srjchsv/gosyncfolders/internal/scan"
 	"os"
 	"sync"
 	"time"
+
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+	"github.com/srjchsv/gosyncfolders/internal/scan"
 )
 
 var (
@@ -82,12 +83,21 @@ var goCmd = &cobra.Command{
 		src := args[0]
 		dst := args[1]
 
-		_, err2 := os.Stat(src)
-		if err2 != nil {
-			err2 := os.Mkdir(src, 0750)
-			if err2 != nil {
-				log.Errorf("err2or creating source path:%v", err2)
+		for {
+			_, err = os.Stat(src)
+			if err != nil {
+				fmt.Println("Source folder path not found. Enter the right path:")
+				fmt.Scanln(&src)
+				continue
 			}
+
+			_, err = os.Stat(dst)
+			if err != nil {
+				fmt.Println("Destination folder path not found. Enter the right path:")
+				fmt.Scanln(&dst)
+				continue
+			}
+			break
 		}
 
 		fmt.Printf("Source folder path:\n%v\n", src)
@@ -113,8 +123,8 @@ var goCmd = &cobra.Command{
 		ctx, cancel := context.WithCancel(context.TODO())
 
 		var errCh chan error
-		go scan.Source(ctx, src, dst, &mu, errCh)
-		go scan.Destination(ctx, src, dst, &mu, errCh)
+		go scan.Source(ctx, src, dst, &mu)
+		go scan.Destination(ctx, src, dst, &mu)
 		<-errCh
 		cancel()
 		log.Info("Exiting program...")

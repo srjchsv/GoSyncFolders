@@ -3,13 +3,14 @@ package scan
 import (
 	"context"
 	"fmt"
-	"github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/require"
 	"io/ioutil"
 	"os"
 	"sync"
 	"testing"
 	"time"
+
+	"github.com/sirupsen/logrus"
+	"github.com/stretchr/testify/require"
 )
 
 var (
@@ -19,7 +20,6 @@ var (
 	mu          sync.RWMutex
 	timeout     = time.Millisecond * 500
 	ctx, cancel = context.WithCancel(context.TODO())
-	errCh       chan error
 )
 
 func init() {
@@ -41,7 +41,7 @@ func TestSource(t *testing.T) {
 	req := require.New(t)
 	testCase := func(src, dst string, mu *sync.RWMutex, timeout time.Duration, want int) func(t *testing.T) {
 		return func(t *testing.T) {
-			go Source(ctx, src, dst, mu, errCh)
+			go Source(ctx, src, dst, mu)
 			time.Sleep(time.Second * 2)
 			files, _ := ioutil.ReadDir(dstPath)
 			res := len(files)
@@ -59,7 +59,7 @@ func TestDestination(t *testing.T) {
 			os.MkdirAll(srcPath, 0750)
 			files, _ := ioutil.ReadDir(srcPath)
 			res := len(files)
-			go Destination(ctx, srcPath, dstPath, &mu, errCh)
+			go Destination(ctx, srcPath, dstPath, &mu)
 			time.Sleep(time.Second * 2)
 			req.Equal(want, res)
 			os.RemoveAll("../../test/")

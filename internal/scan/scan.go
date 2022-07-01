@@ -2,11 +2,12 @@ package scan
 
 import (
 	"context"
-	"github.com/srjchsv/gosyncfolders/pkg/utils"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"time"
+
+	"github.com/srjchsv/gosyncfolders/pkg/utils"
 
 	"sync"
 
@@ -14,7 +15,7 @@ import (
 )
 
 // Source folder scan to sync with destination folder
-func Source(ctx context.Context, src, dst string, mu *sync.RWMutex, ch chan error) {
+func Source(ctx context.Context, src, dst string, mu *sync.RWMutex) {
 	mu.RLock()
 	defer mu.RUnlock()
 
@@ -38,7 +39,6 @@ func Source(ctx context.Context, src, dst string, mu *sync.RWMutex, ch chan erro
 					if err != nil {
 						err := utils.CopyFilesIoutil(srcPath, dstPath)
 						if err != nil {
-							ch <- err
 							log.Errorf("error copying files: %v", err)
 						}
 					} else {
@@ -46,7 +46,6 @@ func Source(ctx context.Context, src, dst string, mu *sync.RWMutex, ch chan erro
 							log.Infof("File %v in source edited and will be copied.", srcPath)
 							err := utils.CopyFilesIoutil(srcPath, dstPath)
 							if err != nil {
-								ch <- err
 								log.Errorf("error copying files: %v", err)
 							}
 						}
@@ -56,13 +55,15 @@ func Source(ctx context.Context, src, dst string, mu *sync.RWMutex, ch chan erro
 			})
 			if srcScan != nil {
 				log.Errorf("error scanning the source folder: %v", srcScan)
+				log.Println("exiting program")
+				os.Exit(2)
 			}
 		}
 	}
 }
 
 // Destination folder scan for unwanted files and deletes them
-func Destination(ctx context.Context, src, dst string, mu *sync.RWMutex, ch chan error) {
+func Destination(ctx context.Context, src, dst string, mu *sync.RWMutex) {
 	mu.RLock()
 	defer mu.RUnlock()
 
@@ -90,7 +91,6 @@ func Destination(ctx context.Context, src, dst string, mu *sync.RWMutex, ch chan
 						}
 						err = os.Remove(dstPath)
 						if err != nil {
-							ch <- err
 							log.Errorf("error removing the files: %v", err)
 						}
 						log.Infof("removed %v bytes of unwanted files: %v :", file.Size(), dstPath)
@@ -100,6 +100,8 @@ func Destination(ctx context.Context, src, dst string, mu *sync.RWMutex, ch chan
 			})
 			if dstScan != nil {
 				log.Errorf("error scanning the destination folder: %v", dstScan)
+				log.Println("exiting program")
+				os.Exit(2)
 			}
 		}
 	}
