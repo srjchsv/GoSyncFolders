@@ -1,14 +1,6 @@
-syncgo:
-	go run cmd/app/main.go ../SRC ../DEST
-
-gosyncgo:
-	go run cmd/app/main.go ../SRC ../DEST  &
-
-
 testgo:
 	@go test -cover ./...
 	@rm -d -r ./test
-
 
 benchgo:
 	@cd ./pkg/utils/ && go test -bench=. -benchmem -benchtime=5s > result.txt

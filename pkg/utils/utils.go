@@ -3,12 +3,14 @@ package utils
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
 	"io"
 	"io/fs"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -127,6 +129,7 @@ func CopyFilesIoCopy(src, dst string) error {
 	})
 }
 
+//Hash makes hash out of file
 func Hash(path string) (value string) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -140,4 +143,23 @@ func Hash(path string) (value string) {
 	}
 	value = hex.EncodeToString(hasher.Sum(nil))
 	return
+}
+
+//PrettyConsole prints pretty console while loading program
+func PrettyConsole() {
+	for i := 0; i < 30; i++ {
+		fmt.Print("*")
+		if i == 10 {
+			fmt.Println()
+		}
+		if i == 12 {
+			fmt.Print("Sync Started")
+		}
+		fmt.Print("*")
+		if i == 17 {
+			fmt.Println()
+		}
+		fmt.Print("*")
+		time.Sleep(time.Millisecond * 30)
+	}
 }

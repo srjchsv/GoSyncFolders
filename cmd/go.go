@@ -8,20 +8,18 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"os/signal"
 	"sync"
-	"time"
+	"syscall"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/srjchsv/gosyncfolders/internal/scan"
+	"github.com/srjchsv/gosyncfolders/pkg/utils"
 )
 
 var (
-	consoleLoop       = 30
-	console1LineBreak = 10
-	console2LineBreak = 12
-	console3LineBreak = 17
-	mu                sync.RWMutex
+	mu sync.RWMutex
 )
 
 // goCmd represents the go command
@@ -103,31 +101,19 @@ var goCmd = &cobra.Command{
 		fmt.Printf("Source folder path:\n%v\n", src)
 		fmt.Printf("Destination folder path:\n%v\n", dst)
 
-		for i := 0; i < consoleLoop; i++ {
-			fmt.Print("*")
-			if i == console1LineBreak {
-				fmt.Println()
-			}
-			if i == console2LineBreak {
-				fmt.Print("Sync Started")
-			}
-			fmt.Print("*")
-			if i == console3LineBreak {
-				fmt.Println()
-			}
-
-			fmt.Print("*")
-			time.Sleep(time.Millisecond * 30)
-		}
+		utils.PrettyConsole()
 
 		ctx, cancel := context.WithCancel(context.TODO())
+		defer cancel()
 
-		var errCh chan error
 		go scan.Source(ctx, src, dst, &mu)
 		go scan.Destination(ctx, src, dst, &mu)
-		<-errCh
-		cancel()
-		log.Info("Exiting program...")
+
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+		<-c
+		log.Info("Shutting down program...")
+
 	},
 }
 
