@@ -41,7 +41,7 @@ func TestSource(t *testing.T) {
 	req := require.New(t)
 	testCase := func(src, dst string, mu *sync.RWMutex, timeout time.Duration, want int) func(t *testing.T) {
 		return func(t *testing.T) {
-			go Source(ctx, src, dst, mu)
+			go Source(src, dst, mu)
 			time.Sleep(time.Second * 2)
 			files, _ := ioutil.ReadDir(dstPath)
 			res := len(files)
@@ -59,7 +59,7 @@ func TestDestination(t *testing.T) {
 			os.MkdirAll(srcPath, 0750)
 			files, _ := ioutil.ReadDir(srcPath)
 			res := len(files)
-			go Destination(ctx, srcPath, dstPath, &mu)
+			go Destination(srcPath, dstPath, &mu)
 			time.Sleep(time.Second * 2)
 			req.Equal(want, res)
 			os.RemoveAll("../../test/")
