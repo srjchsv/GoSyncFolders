@@ -1,7 +1,6 @@
 package scan
 
 import (
-	"context"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -15,20 +14,15 @@ import (
 )
 
 // Source folder scan to sync with destination folder
-func Source(ctx context.Context, src, dst string, mu *sync.RWMutex) {
+func Source(src, dst string, mu *sync.RWMutex) {
 	mu.RLock()
 	defer mu.RUnlock()
-
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
 
 	tick := time.NewTicker(time.Second)
 	defer tick.Stop()
 
 	for {
 		select {
-		case <-ctx.Done():
-			return
 		case <-tick.C:
 			srcScan := filepath.Walk(src, func(path string, info fs.FileInfo, err error) error {
 				if path != src {
@@ -63,20 +57,15 @@ func Source(ctx context.Context, src, dst string, mu *sync.RWMutex) {
 }
 
 // Destination folder scan for unwanted files and deletes them
-func Destination(ctx context.Context, src, dst string, mu *sync.RWMutex) {
+func Destination(src, dst string, mu *sync.RWMutex) {
 	mu.RLock()
 	defer mu.RUnlock()
-
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
 
 	tick := time.NewTicker(time.Second)
 	defer tick.Stop()
 
 	for {
 		select {
-		case <-ctx.Done():
-			return
 		case <-tick.C:
 			dstScan := filepath.Walk(dst, func(path string, info fs.FileInfo, err error) error {
 				if path != dst {

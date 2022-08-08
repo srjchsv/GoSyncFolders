@@ -2,11 +2,10 @@ package utils
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
-	"github.com/stretchr/testify/require"
-	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/require"
 )
 
 var (
@@ -18,7 +17,7 @@ var (
 
 func init() {
 
-	logrus.SetOutput(ioutil.Discard)
+	//logrus.SetOutput(ioutil.Discard)
 
 	os.MkdirAll("../../test/source", 0750)
 	os.MkdirAll("../../test/destination", 0750)

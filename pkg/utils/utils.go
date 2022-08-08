@@ -129,7 +129,7 @@ func CopyFilesIoCopy(src, dst string) error {
 	})
 }
 
-//Hash makes hash out of file
+// Hash makes hash out of file
 func Hash(path string) (value string) {
 	f, err := os.Open(path)
 	if err != nil {
@@ -145,21 +145,27 @@ func Hash(path string) (value string) {
 	return
 }
 
-//PrettyConsole prints pretty console while loading program
+// PrettyConsole prints pretty console while loading program
 func PrettyConsole() {
-	for i := 0; i < 30; i++ {
+	for i := 0; i < 31; i++ {
 		fmt.Print("*")
-		if i == 10 {
-			fmt.Println()
-		}
-		if i == 12 {
-			fmt.Print("Sync Started")
-		}
-		fmt.Print("*")
-		if i == 17 {
-			fmt.Println()
-		}
-		fmt.Print("*")
-		time.Sleep(time.Millisecond * 30)
+		time.Sleep(time.Millisecond * 10)
 	}
+	fmt.Println()
+	for i := 0; i < 31; i++ {
+		fmt.Print("*")
+		time.Sleep(time.Millisecond * 10)
+	}
+	fmt.Println()
+	fmt.Println("=========Sync Started==========")
+	for i := 0; i < 31; i++ {
+		fmt.Print("*")
+		time.Sleep(time.Millisecond * 10)
+	}
+	fmt.Println()
+	for i := 0; i < 31; i++ {
+		fmt.Print("*")
+		time.Sleep(time.Millisecond * 10)
+	}
+	fmt.Println()
 }

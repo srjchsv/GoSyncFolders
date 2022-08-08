@@ -19,4 +19,4 @@
 ## To run tests or benchmarks execute commands in the root gosyncfolders directory :
 ### - Tests `make testgo`
 ### - Benchmarks `make benchgo`
-### - Benchstat `make benchstatgo`
+

@@ -5,7 +5,6 @@ Copyright © 2022 srjchsv@gmail.com
 package cmd
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"os/signal"
@@ -82,15 +81,13 @@ var goCmd = &cobra.Command{
 		dst := args[1]
 
 		for {
-			_, err = os.Stat(src)
-			if err != nil {
+			if _, err := os.Stat(src); os.IsNotExist(err) {
 				fmt.Println("Source folder path not found. Enter the right path:")
 				fmt.Scanln(&src)
 				continue
 			}
 
-			_, err = os.Stat(dst)
-			if err != nil {
+			if _, err := os.Stat(dst); os.IsNotExist(err) {
 				fmt.Println("Destination folder path not found. Enter the right path:")
 				fmt.Scanln(&dst)
 				continue
@@ -103,11 +100,8 @@ var goCmd = &cobra.Command{
 
 		utils.PrettyConsole()
 
-		ctx, cancel := context.WithCancel(context.TODO())
-		defer cancel()
-
-		go scan.Source(ctx, src, dst, &mu)
-		go scan.Destination(ctx, src, dst, &mu)
+		go scan.Source(src, dst, &mu)
+		go scan.Destination(src, dst, &mu)
 
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)

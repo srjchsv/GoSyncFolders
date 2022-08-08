@@ -2,10 +2,11 @@ package utils
 
 import (
 	"fmt"
-	"github.com/sirupsen/logrus"
 	"io/ioutil"
 	"os"
 	"testing"
+
+	"github.com/sirupsen/logrus"
 )
 
 func init() {
