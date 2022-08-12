@@ -147,25 +147,22 @@ func Hash(path string) (value string) {
 
 // PrettyConsole prints pretty console while loading program
 func PrettyConsole() {
-	for i := 0; i < 31; i++ {
+	for i := 0; i < 120; i++ {
 		fmt.Print("*")
-		time.Sleep(time.Millisecond * 10)
+		switch i {
+		case 29:
+			time.Sleep(time.Millisecond * 10)
+			fmt.Println()
+		case 59:
+			time.Sleep(time.Millisecond * 10)
+			fmt.Println()
+			fmt.Println("=========Sync Started=========")
+		case 89:
+			time.Sleep(time.Millisecond * 10)
+			fmt.Println()
+		case 119:
+			time.Sleep(time.Millisecond * 10)
+			fmt.Println()
+		}
 	}
-	fmt.Println()
-	for i := 0; i < 31; i++ {
-		fmt.Print("*")
-		time.Sleep(time.Millisecond * 10)
-	}
-	fmt.Println()
-	fmt.Println("=========Sync Started==========")
-	for i := 0; i < 31; i++ {
-		fmt.Print("*")
-		time.Sleep(time.Millisecond * 10)
-	}
-	fmt.Println()
-	for i := 0; i < 31; i++ {
-		fmt.Print("*")
-		time.Sleep(time.Millisecond * 10)
-	}
-	fmt.Println()
 }
